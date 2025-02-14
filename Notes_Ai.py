@@ -6,9 +6,12 @@ from langdetect import detect
 from transformers import pipeline
 
 # Load environment variables
+os.environ["STREAMLIT_WATCH"] = "false"
 
 API_KEY = "AIzaSyAIitk5qtGOIzPW_8pWuStLLo1sFFxmnII"
-genai.configure(API_KEY)  # Set the API key before using the model
+genai.configure(api_key=API_KEY)  
+# Correct
+  # Set the API key before using the model
 
 # Load Whisper Model
 model = whisper.load_model("large")
