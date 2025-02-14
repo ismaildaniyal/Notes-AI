@@ -4,12 +4,11 @@ import os
 import google.generativeai as genai
 from langdetect import detect
 from transformers import pipeline
-from dotenv import load_dotenv
 
 # Load environment variables
 
 API_KEY = "AIzaSyAIitk5qtGOIzPW_8pWuStLLo1sFFxmnII"
-genai.configure(api_key=API_KEY)  # Set the API key before using the model
+genai.configure(API_KEY)  # Set the API key before using the model
 
 # Load Whisper Model
 model = whisper.load_model("large")
