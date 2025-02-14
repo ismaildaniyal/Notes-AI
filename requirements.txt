@@ -1,0 +1,6 @@
+streamlit
+openai-whisper
+transformers
+langdetect
+google-generativeai
+python-dotenv
