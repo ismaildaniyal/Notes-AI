@@ -4,22 +4,25 @@ import os
 import google.generativeai as genai
 from langdetect import detect
 
-# Load environment variables
+# Load API Key for Gemini AI
 GEMINI_API_KEY = st.secrets["google"]["gemini_api_key"]
-genai.configure(api_key=GEMINI_API_KEY)  # Set the API key before using the model
+genai.configure(api_key=GEMINI_API_KEY)
 
-# Load Whisper Model
-model = whisper.load_model("small",device="cpu")
-model.to("cpu")
+# Load Whisper Model (small)
+@st.cache_resource
+def load_whisper_model():
+    return whisper.load_model("small")
+
+model = load_whisper_model()
 
 def transcribe_audio(file_path):
-    """Transcribes audio using Whisper AI."""
+    """Transcribes audio using Whisper small model."""
     result = model.transcribe(file_path)
-    os.remover(file_path)
+    os.remove(file_path)  # Corrected file deletion
     return result["text"]
 
 def detect_language(text):
-    """Detects the language of the text."""
+    """Detects the language of the transcribed text."""
     return detect(text)
 
 def summarize_text(text):
@@ -66,7 +69,7 @@ if uploaded_file:
     st.info("Processing audio file...")
 
     # Transcription
-    transcript = transcribe_audio(uploaded_file)
+    transcript = transcribe_audio(file_path)  # Now passes the correct file path
 
     # Detect Language
     lang = detect_language(transcript)
@@ -87,4 +90,3 @@ if uploaded_file:
 
     st.subheader("✅ Action Items")
     st.write(action_items)
-    
