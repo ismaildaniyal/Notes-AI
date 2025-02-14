@@ -9,7 +9,8 @@ GEMINI_API_KEY = st.secrets["google"]["gemini_api_key"]
 genai.configure(api_key=GEMINI_API_KEY)  # Set the API key before using the model
 
 # Load Whisper Model
-model = whisper.load_model("small")
+model = whisper.load_model("small",device="cpu")
+model.to("cpu")
 
 def transcribe_audio(file_path):
     """Transcribes audio using Whisper AI."""
