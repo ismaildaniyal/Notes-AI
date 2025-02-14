@@ -5,8 +5,8 @@ import google.generativeai as genai
 from langdetect import detect
 
 # Load environment variables
-API_KEY = "AIzaSyAIitk5qtGOIzPW_8pWuStLLo1sFFxmnII"
-genai.configure(api_key=API_KEY)  # Set the API key before using the model
+GEMINI_API_KEY = st.secrets["google"]["gemini_api_key"]
+genai.configure(api_key=GEMINI_API_KEY)  # Set the API key before using the model
 
 # Load Whisper Model
 model = whisper.load_model("small")
