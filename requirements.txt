@@ -3,5 +3,4 @@ openai-whisper
 torch
 google-generativeai
 langdetect
-transformers
 python-dotenv
