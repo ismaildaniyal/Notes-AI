@@ -3,21 +3,14 @@ import whisper
 import os
 import google.generativeai as genai
 from langdetect import detect
-from transformers import pipeline
+from dotenv import load_dotenv
 
 # Load environment variables
-os.environ["STREAMLIT_WATCH"] = "false"
-
 API_KEY = "AIzaSyAIitk5qtGOIzPW_8pWuStLLo1sFFxmnII"
-genai.configure(api_key=API_KEY)  
-# Correct
-  # Set the API key before using the model
+genai.configure(api_key=API_KEY)  # Set the API key before using the model
 
 # Load Whisper Model
 model = whisper.load_model("large")
-
-# Load Summarization Model
-summarizer = pipeline("summarization")
 
 def transcribe_audio(file_path):
     """Transcribes audio using Whisper AI."""
@@ -29,27 +22,37 @@ def detect_language(text):
     return detect(text)
 
 def summarize_text(text):
-    """Summarizes transcribed text using NLP model."""
-    return summarizer(text, max_length=150, min_length=50, do_sample=False)[0]['summary_text']
+    """Summarizes transcribed text using Gemini AI."""
+    prompt = f"""
+    Summarize the following meeting notes concisely:
+    
+    {text}
+    
+    Summary:
+    """
+    
+    model = genai.GenerativeModel("gemini-pro")
+    response = model.generate_content(prompt)
+    
+    return response.text.strip()
 
 def extract_action_items(text):
     """Extracts action items using Gemini AI."""
     prompt = f"""
     Extract key action items from the following meeting notes:
-
+    
     {text}
-
+    
     Action Items:
     """
-
+    
     model = genai.GenerativeModel("gemini-pro")
     response = model.generate_content(prompt)
     
     return response.text.strip()
 
 # Streamlit UI
-
-st.title("🎙 Meeting Notes Genrator & Action Items")
+st.title("🎙 Meeting Notes Generator & Action Items")
 st.write("Upload an audio file to transcribe, summarize, and extract action items.")
 
 uploaded_file = st.file_uploader("Upload Audio File (MP3, WAV, M4A)", type=["mp3", "wav", "m4a"])
@@ -83,5 +86,6 @@ if uploaded_file:
 
     st.subheader("✅ Action Items")
     st.write(action_items)
+    
     # Cleanup
     os.remove(file_path)
