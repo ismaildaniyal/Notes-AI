@@ -10,7 +10,7 @@ API_KEY = "AIzaSyAIitk5qtGOIzPW_8pWuStLLo1sFFxmnII"
 genai.configure(api_key=API_KEY)  # Set the API key before using the model
 
 # Load Whisper Model
-model = whisper.load_model("large")
+model = whisper.load_model("small")
 
 def transcribe_audio(file_path):
     """Transcribes audio using Whisper AI."""
