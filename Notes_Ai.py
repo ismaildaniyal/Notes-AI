@@ -15,6 +15,7 @@ model.to("cpu")
 def transcribe_audio(file_path):
     """Transcribes audio using Whisper AI."""
     result = model.transcribe(file_path)
+    os.remover(file_path)
     return result["text"]
 
 def detect_language(text):
@@ -65,7 +66,7 @@ if uploaded_file:
     st.info("Processing audio file...")
 
     # Transcription
-    transcript = transcribe_audio(file_path)
+    transcript = transcribe_audio(uploaded_file)
 
     # Detect Language
     lang = detect_language(transcript)
