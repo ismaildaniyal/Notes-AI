@@ -17,8 +17,14 @@ model = load_whisper_model()
 
 def transcribe_audio(file_path):
     """Transcribes audio using Whisper small model."""
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"File not found: {file_path}")
+    
     result = model.transcribe(file_path)
-    os.remove(file_path)  # Corrected file deletion
+    
+    # Delete file only after successful transcription
+    os.remove(file_path)
+    
     return result["text"]
 
 def detect_language(text):
@@ -63,30 +69,36 @@ uploaded_file = st.file_uploader("Upload Audio File (MP3, WAV, M4A)", type=["mp3
 
 if uploaded_file:
     file_path = f"temp_{uploaded_file.name}"
-    with open(file_path, "wb") as f:
-        f.write(uploaded_file.read())
-    
-    st.info("Processing audio file...")
 
-    # Transcription
-    transcript = transcribe_audio(file_path)  # Now passes the correct file path
+    # Ensure file is properly saved
+    try:
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.read())
 
-    # Detect Language
-    lang = detect_language(transcript)
-    st.write(f"Detected Language: **{lang.upper()}**")
+        st.info("Processing audio file...")
 
-    # Summarization
-    summary = summarize_text(transcript)
+        # Transcription
+        transcript = transcribe_audio(file_path)
 
-    # Extract Action Items
-    action_items = extract_action_items(transcript)
+        # Detect Language
+        lang = detect_language(transcript)
+        st.write(f"Detected Language: **{lang.upper()}**")
 
-    # Display Results
-    st.subheader("📝 Transcription")
-    st.write(transcript)
+        # Summarization
+        summary = summarize_text(transcript)
 
-    st.subheader("📌 Summary")
-    st.write(summary)
+        # Extract Action Items
+        action_items = extract_action_items(transcript)
 
-    st.subheader("✅ Action Items")
-    st.write(action_items)
+        # Display Results
+        st.subheader("📝 Transcription")
+        st.write(transcript)
+
+        st.subheader("📌 Summary")
+        st.write(summary)
+
+        st.subheader("✅ Action Items")
+        st.write(action_items)
+
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
