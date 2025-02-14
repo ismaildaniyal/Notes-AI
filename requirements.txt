@@ -1,6 +1,7 @@
 streamlit
 openai-whisper
-transformers
-langdetect
+torch
 google-generativeai
+langdetect
+transformers
 python-dotenv
