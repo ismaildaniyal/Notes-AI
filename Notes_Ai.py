@@ -31,7 +31,7 @@ def summarize_text(text):
     Summary:
     """
     
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)
     
     return response.text.strip()
@@ -46,7 +46,7 @@ def extract_action_items(text):
     Action Items:
     """
     
-    model = genai.GenerativeModel("gemini-pro")
+    model = genai.GenerativeModel("gemini-1.5-flash")
     response = model.generate_content(prompt)
     
     return response.text.strip()
