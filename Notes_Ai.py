@@ -87,5 +87,3 @@ if uploaded_file:
     st.subheader("✅ Action Items")
     st.write(action_items)
     
-    # Cleanup
-    os.remove(file_path)
