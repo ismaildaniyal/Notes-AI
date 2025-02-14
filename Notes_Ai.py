@@ -3,7 +3,6 @@ import whisper
 import os
 import google.generativeai as genai
 from langdetect import detect
-from dotenv import load_dotenv
 
 # Load environment variables
 API_KEY = "AIzaSyAIitk5qtGOIzPW_8pWuStLLo1sFFxmnII"
